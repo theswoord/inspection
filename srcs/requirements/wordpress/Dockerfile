@@ -29,7 +29,7 @@ RUN wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add - && \
 
 
 
-RUN apt-get update && apt-get install -y sendmail
+RUN apt-get update && apt-get install -y sendmail 
 
 
 RUN wget https://wordpress.org/latest.tar.gz -P /var/www/
