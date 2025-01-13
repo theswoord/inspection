@@ -29,23 +29,31 @@ RUN wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add - && \
 
 
 
+RUN apt-get update && apt-get install -y sendmail
 
 
 RUN wget https://wordpress.org/latest.tar.gz -P /var/www/
+RUN      chown  root:root /var/www/latest.tar.gz
+RUN      chmod  777  /var/www/latest.tar.gz
+
 RUN cd /var/www/ && tar -xzvf latest.tar.gz 
 RUN      chown -R root:root /var/www/wordpress
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && mv /wp-cli.phar /bin/wp && chmod +x /bin/wp
-COPY ./tools/config.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/config.sh
+COPY ./tools/config.sh /var/www/wordpress
+RUN chown root:root /var/www/wordpress/config.sh
+RUN chmod +x /var/www/wordpress/config.sh
 COPY ./conf/www.conf /etc/php/8.1/fpm/pool.d/www.conf
 
-ENTRYPOINT ["bash", "/usr/local/bin/config.sh"]
 RUN chown -R www-data:www-data /var/www/wordpress
-RUN chmod -R 755 /var/www/wordpress
+RUN chmod -R 777 /var/www/wordpress
+# RUN cd /var/www/wordpress/
 # RUN mkdir /run/php
 # RUN chmod 777 /run/php
 # ENTRYPOINT [ "executable" ]
 
-
 EXPOSE 9000
+WORKDIR /var/www/wordpress
+ENTRYPOINT ["bash", "config.sh"]
+# RUN bash /var/www/wordpress/config.sh
+
 CMD ["php-fpm8.1", "-F"]
