@@ -30,8 +30,8 @@ fi
 # echo "DB Name: $MADB_NAME, DB User: $MADB_USER, DB Host: $MADB_HOST, DB Password: $MADB_PASSWORD"
 # wp --allow-root --path="/var/www/wordpress" config create --dbname="$MADB_NAME" --dbuser="$MADB_USER" --dbpass="$MADB_PASSWORD" --dbhost="$MADB_HOST"
 
-wp --allow-root config create --dbname="$MADB_NAME" --dbuser="$MADB_USER" --dbpass="$MADB_PASSWORD" --dbhost="$MADB_HOST"
-wp --allow-root core install --url="$DOMAIN_NAME" --title="$WP_TITLE" --admin_user="$WP_ADMIN_USER" --admin_password="$WP_ADMIN_PASS" --admin_email="$WP_ADMIN_EMAIL"
+wp --allow-root config create --dbname="$MADB_NAME" --dbuser="$MADB_USER" --dbpass="$MADB_PASSWORD" --dbhost="$MADB_HOST" --debug
+wp --allow-root core install --url="$DOMAIN_NAME" --title="$WP_TITLE" --admin_user="$WP_ADMIN_USER" --admin_password="$WP_ADMIN_PASS" --admin_email="$WP_ADMIN_EMAIL" --debug
 
 wp user list --allow-root --path="/var/www/wordpress" --field=user_login | grep -q ${WP_USER}
 if [ $? != 0 ]; then
