@@ -1,4 +1,3 @@
-version: '3'
 
 services:
   mariadb:
@@ -31,8 +30,8 @@ services:
     networks:
       - mynet
     depends_on:
-      - mariadb
-    # command: ["bash", "/var/www/wordpress/config.sh"]
+      mariadb:
+        condition: service_healthy
     restart: always
 
 
@@ -56,11 +55,18 @@ services:
 
 
 volumes:
-  wordpress:
+  wordpress: 
     driver: local
+    driver_opts:
+      type: none
+      o: 'bind'
+      device: /home/nbouhali/data/wordpress
   mariadb:
     driver: local
-
+    driver_opts:
+      type: none
+      o: 'bind'
+      device: /home/nbouhali/data/mariadb
 networks:
   mynet:
     driver: bridge
